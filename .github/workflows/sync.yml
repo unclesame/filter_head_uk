@@ -1,0 +1,20 @@
+name: Sync to Deploy Repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to deploy repo
+        run: |
+          git remote add deploy https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/unclesame/filter_head_uk.git
+          git push deploy main --force
