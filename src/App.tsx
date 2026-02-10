@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import Header from './components/Header';
@@ -20,6 +20,18 @@ import AdminProductsPage from './pages/admin/AdminProductsPage';
 import AdminProductEditorPage from './pages/admin/AdminProductEditorPage';
 import ScrollToTop from './components/ScrollToTop';
 
+function StoreLayout() {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -27,39 +39,26 @@ export default function App() {
         <CartProvider>
           <ScrollToTop />
           <Routes>
-            <Route path="/admin">
-              <Route index element={<AdminLoginPage />} />
-              <Route element={<AdminLayout />}>
-                <Route path="products" element={<AdminProductsPage />} />
-                <Route path="products/new" element={<AdminProductEditorPage />} />
-                <Route path="products/:id/edit" element={<AdminProductEditorPage />} />
-              </Route>
+            <Route path="/admin" element={<AdminLoginPage />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route path="products" element={<AdminProductsPage />} />
+              <Route path="products/new" element={<AdminProductEditorPage />} />
+              <Route path="products/:id/edit" element={<AdminProductEditorPage />} />
             </Route>
 
-            <Route
-              path="*"
-              element={
-                <div className="flex min-h-screen flex-col">
-                  <Header />
-                  <main className="flex-1">
-                    <Routes>
-                      <Route path="/" element={<HomePage />} />
-                      <Route path="/products" element={<ProductsPage />} />
-                      <Route path="/products/:slug" element={<ProductDetailPage />} />
-                      <Route path="/cart" element={<CartPage />} />
-                      <Route path="/checkout" element={<CheckoutPage />} />
-                      <Route path="/checkout/success" element={<OrderSuccessPage />} />
-                      <Route path="/checkout/cancelled" element={<OrderCancelledPage />} />
-                      <Route path="/faq" element={<FAQPage />} />
-                      <Route path="/shipping-returns" element={<ShippingReturnsPage />} />
-                      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-                      <Route path="/terms" element={<TermsPage />} />
-                    </Routes>
-                  </main>
-                  <Footer />
-                </div>
-              }
-            />
+            <Route element={<StoreLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/:slug" element={<ProductDetailPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/checkout/success" element={<OrderSuccessPage />} />
+              <Route path="/checkout/cancelled" element={<OrderCancelledPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/shipping-returns" element={<ShippingReturnsPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+              <Route path="/terms" element={<TermsPage />} />
+            </Route>
           </Routes>
         </CartProvider>
       </AuthProvider>
