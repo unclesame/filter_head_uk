@@ -19,5 +19,12 @@ jobs:
         env:
           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         run: |
-          git remote add deploy https://x-access-token:${DEPLOY_TOKEN}@github.com/unclesame/filter_head_uk.git
+          # Remove any credential helpers
+          git config --unset-all http.https://github.com/.extraheader || true
+          git config --global --unset-all http.https://github.com/.extraheader || true
+          
+          # Set auth explicitly
+          git config http.https://github.com/.extraheader "AUTHORIZATION: basic $(echo -n "x-access-token:${DEPLOY_TOKEN}" | base64)"
+          
+          git remote add deploy https://github.com/unclesame/filter_head_uk.git
           git push deploy main --force
