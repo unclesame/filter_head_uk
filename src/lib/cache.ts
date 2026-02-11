@@ -32,36 +32,45 @@ export async function fetchProducts(options?: {
   const cached = getCached<Product[]>(key);
   if (cached) return cached;
 
-  let query = supabase.from('products').select('*');
+  try {
+    let query = supabase.from('products').select('*');
 
-  if (options?.bestSellers) {
-    query = query.eq('is_best_seller', true);
-  }
-  if (options?.category) {
-    query = query.eq('category', options.category);
-  }
+    if (options?.bestSellers) {
+      query = query.eq('is_best_seller', true);
+    }
+    if (options?.category) {
+      query = query.eq('category', options.category);
+    }
 
-  switch (options?.sort) {
-    case 'price-low':
-      query = query.order('price', { ascending: true });
-      break;
-    case 'price-high':
-      query = query.order('price', { ascending: false });
-      break;
-    case 'rating':
-      query = query.order('rating', { ascending: false });
-      break;
-    case 'newest':
-      query = query.order('created_at', { ascending: false });
-      break;
-    default:
-      query = query.order('review_count', { ascending: false });
-  }
+    switch (options?.sort) {
+      case 'price-low':
+        query = query.order('price', { ascending: true });
+        break;
+      case 'price-high':
+        query = query.order('price', { ascending: false });
+        break;
+      case 'rating':
+        query = query.order('rating', { ascending: false });
+        break;
+      case 'newest':
+        query = query.order('created_at', { ascending: false });
+        break;
+      default:
+        query = query.order('review_count', { ascending: false });
+    }
 
-  const { data } = await query;
-  const products = data || [];
-  setCache(key, products);
-  return products;
+    const { data, error } = await query;
+    if (error) {
+      console.error('Failed to fetch products:', error);
+      return [];
+    }
+    const products = data || [];
+    setCache(key, products);
+    return products;
+  } catch (err) {
+    console.error('Failed to fetch products:', err);
+    return [];
+  }
 }
 
 export async function fetchProductBySlug(slug: string): Promise<Product | null> {
@@ -69,14 +78,24 @@ export async function fetchProductBySlug(slug: string): Promise<Product | null> 
   const cached = getCached<Product>(key);
   if (cached) return cached;
 
-  const { data } = await supabase
-    .from('products')
-    .select('*')
-    .eq('slug', slug)
-    .maybeSingle();
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('slug', slug)
+      .maybeSingle();
 
-  if (data) setCache(key, data);
-  return data;
+    if (error) {
+      console.error('Failed to fetch product:', error);
+      return null;
+    }
+
+    if (data) setCache(key, data);
+    return data;
+  } catch (err) {
+    console.error('Failed to fetch product:', err);
+    return null;
+  }
 }
 
 export function invalidateCache(): void {

@@ -17,26 +17,53 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
-      setLoading(false);
-    });
+    let mounted = true;
+
+    async function initSession() {
+      try {
+        const { data: { session: s } } = await supabase.auth.getSession();
+        if (mounted) {
+          setSession(s);
+          setLoading(false);
+        }
+      } catch (err) {
+        console.error('Failed to get session:', err);
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    initSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
+      if (mounted) {
+        setSession(s);
+      }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   async function signIn(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) return { error: error.message };
-    return { error: null };
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) return { error: error.message };
+      return { error: null };
+    } catch (err) {
+      return { error: 'Failed to sign in' };
+    }
   }
 
   async function signOut() {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      console.error('Failed to sign out:', err);
+    }
   }
 
   return (
