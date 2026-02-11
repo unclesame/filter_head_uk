@@ -7,6 +7,7 @@ interface AuthState {
   user: User | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signUp: (email: string, password: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -58,6 +59,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  async function signUp(email: string, password: string) {
+    try {
+      const { error } = await supabase.auth.signUp({ email, password });
+      if (error) return { error: error.message };
+      return { error: null };
+    } catch (err) {
+      return { error: 'Failed to create account' };
+    }
+  }
+
   async function signOut() {
     try {
       await supabase.auth.signOut();
@@ -68,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ session, user: session?.user ?? null, loading, signIn, signOut }}
+      value={{ session, user: session?.user ?? null, loading, signIn, signUp, signOut }}
     >
       {children}
     </AuthContext.Provider>
