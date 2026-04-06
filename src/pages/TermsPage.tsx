@@ -49,7 +49,7 @@ export default function TermsPage() {
                 All prices displayed on our website are in British Pounds Sterling (GBP) and include VAT at the prevailing rate where applicable. Delivery charges are shown separately and will be added to your order total at checkout.
               </p>
               <p className="mt-2">
-                Payment is processed securely via Stripe. We accept Visa, Mastercard, and American Express. Payment must be received in full before your order is dispatched.
+                Payment is processed securely via Square. We accept Visa, Mastercard, American Express, Apple Pay, and Google Pay. Payment must be received in full before your order is dispatched.
               </p>
             </section>
 

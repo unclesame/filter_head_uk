@@ -1,9 +1,10 @@
 import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
-import { Droplets, Package, LogOut, LayoutDashboard, ExternalLink } from 'lucide-react';
+import { Droplets, Package, LogOut, ExternalLink, Rss } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const NAV_ITEMS = [
   { to: '/admin/products', label: 'Products', icon: Package },
+  { to: '/admin/google-feed', label: 'Google Feed', icon: Rss },
 ];
 
 export default function AdminLayout() {

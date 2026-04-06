@@ -18,6 +18,7 @@ import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminProductsPage from './pages/admin/AdminProductsPage';
 import AdminProductEditorPage from './pages/admin/AdminProductEditorPage';
+import AdminGoogleFeedPage from './pages/admin/AdminGoogleFeedPage';
 import ScrollToTop from './components/ScrollToTop';
 
 function StoreLayout() {
@@ -44,6 +45,7 @@ export default function App() {
               <Route path="products" element={<AdminProductsPage />} />
               <Route path="products/new" element={<AdminProductEditorPage />} />
               <Route path="products/:id/edit" element={<AdminProductEditorPage />} />
+              <Route path="google-feed" element={<AdminGoogleFeedPage />} />
             </Route>
 
             <Route element={<StoreLayout />}>

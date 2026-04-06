@@ -1,4 +1,3 @@
-import Stripe from "npm:stripe@14.14.0";
 import { createClient } from "npm:@supabase/supabase-js@2.57.4";
 
 const corsHeaders = {
@@ -16,12 +15,12 @@ Deno.serve(async (req: Request) => {
   }
 
   try {
-    const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
-    const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
+    const squareToken = Deno.env.get("SQUARE_ACCESS_TOKEN");
+    const webhookSignatureKey = Deno.env.get("SQUARE_WEBHOOK_SIGNATURE_KEY");
 
-    if (!stripeKey || !webhookSecret) {
+    if (!squareToken) {
       return new Response(
-        JSON.stringify({ error: "Stripe is not configured" }),
+        JSON.stringify({ error: "Square is not configured" }),
         {
           status: 503,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -29,45 +28,114 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const stripe = new Stripe(stripeKey, { apiVersion: "2023-10-16" });
+    const body = await req.text();
+
+    if (webhookSignatureKey) {
+      const signature = req.headers.get("x-square-hmacsha256-signature");
+      if (!signature) {
+        return new Response(
+          JSON.stringify({ error: "Missing Square signature header" }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+
+      const url = req.url;
+      const payload = url + body;
+      const encoder = new TextEncoder();
+      const key = await crypto.subtle.importKey(
+        "raw",
+        encoder.encode(webhookSignatureKey),
+        { name: "HMAC", hash: "SHA-256" },
+        false,
+        ["sign"]
+      );
+      const signatureBytes = await crypto.subtle.sign(
+        "HMAC",
+        key,
+        encoder.encode(payload)
+      );
+      const computedSignature = btoa(
+        String.fromCharCode(...new Uint8Array(signatureBytes))
+      );
+
+      if (computedSignature !== signature) {
+        return new Response(
+          JSON.stringify({ error: "Invalid signature" }),
+          {
+            status: 401,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          }
+        );
+      }
+    }
+
+    const event = JSON.parse(body);
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const body = await req.text();
-    const sig = req.headers.get("stripe-signature");
+    const eventType = event.type;
 
-    if (!sig) {
-      return new Response(
-        JSON.stringify({ error: "Missing stripe-signature header" }),
-        {
-          status: 400,
+    if (eventType === "payment.completed" || eventType === "payment.updated") {
+      const payment = event.data?.object?.payment || event.data?.object;
+      if (!payment) {
+        return new Response(JSON.stringify({ received: true }), {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const squareOrderId = payment.order_id;
+      if (!squareOrderId) {
+        return new Response(JSON.stringify({ received: true }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const squareBaseUrl =
+        Deno.env.get("SQUARE_ENVIRONMENT") === "sandbox"
+          ? "https://connect.squareupsandbox.com"
+          : "https://connect.squareup.com";
+
+      const orderResp = await fetch(
+        `${squareBaseUrl}/v2/orders/${squareOrderId}`,
+        {
+          headers: {
+            "Square-Version": "2024-01-18",
+            Authorization: `Bearer ${squareToken}`,
+            "Content-Type": "application/json",
+          },
         }
       );
-    }
 
-    const event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
+      const orderData = await orderResp.json();
+      const referenceId = orderData.order?.reference_id;
 
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const orderId = session.metadata?.order_id;
+      if (!referenceId) {
+        return new Response(JSON.stringify({ received: true }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
 
-      if (orderId) {
+      const status = payment.status;
+
+      if (status === "COMPLETED") {
         await supabase
           .from("orders")
-          .update({ status: "paid" })
-          .eq("id", orderId);
+          .update({ status: "paid", square_payment_id: payment.id })
+          .eq("id", referenceId);
 
         const { data: order } = await supabase
           .from("orders")
           .select("*")
-          .eq("id", orderId)
+          .eq("id", referenceId)
           .maybeSingle();
 
         if (order) {
-          const ref = orderId.slice(0, 8).toUpperCase();
+          const ref = referenceId.slice(0, 8).toUpperCase();
 
           const customerSubject = `Order Confirmation - PureShowers #${ref}`;
           const customerBody = buildCustomerEmail(order, ref);
@@ -77,14 +145,14 @@ Deno.serve(async (req: Request) => {
 
           await supabase.from("order_notifications").insert([
             {
-              order_id: orderId,
+              order_id: referenceId,
               recipient_type: "customer",
               recipient_email: order.customer_email,
               subject: customerSubject,
               body: customerBody,
             },
             {
-              order_id: orderId,
+              order_id: referenceId,
               recipient_type: "admin",
               recipient_email: ADMIN_EMAIL,
               subject: adminSubject,
@@ -95,7 +163,12 @@ Deno.serve(async (req: Request) => {
           const resendKey = Deno.env.get("RESEND_API_KEY");
           if (resendKey) {
             const sent = await Promise.allSettled([
-              sendEmail(resendKey, order.customer_email, customerSubject, customerBody),
+              sendEmail(
+                resendKey,
+                order.customer_email,
+                customerSubject,
+                customerBody
+              ),
               sendEmail(resendKey, ADMIN_EMAIL, adminSubject, adminBody),
             ]);
 
@@ -104,21 +177,50 @@ Deno.serve(async (req: Request) => {
               await supabase
                 .from("order_notifications")
                 .update({ sent: true })
-                .eq("order_id", orderId);
+                .eq("order_id", referenceId);
             }
           }
         }
+      } else if (status === "FAILED" || status === "CANCELED") {
+        await supabase
+          .from("orders")
+          .update({ status: status === "FAILED" ? "failed" : "cancelled" })
+          .eq("id", referenceId);
       }
     }
 
-    if (event.type === "checkout.session.expired") {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const orderId = session.metadata?.order_id;
-      if (orderId) {
-        await supabase
-          .from("orders")
-          .update({ status: "expired" })
-          .eq("id", orderId);
+    if (
+      eventType === "order.updated" &&
+      event.data?.object?.order_updated?.state === "CANCELED"
+    ) {
+      const squareOrderId =
+        event.data?.object?.order_updated?.order_id;
+      if (squareOrderId) {
+        const squareBaseUrl =
+          Deno.env.get("SQUARE_ENVIRONMENT") === "sandbox"
+            ? "https://connect.squareupsandbox.com"
+            : "https://connect.squareup.com";
+
+        const orderResp = await fetch(
+          `${squareBaseUrl}/v2/orders/${squareOrderId}`,
+          {
+            headers: {
+              "Square-Version": "2024-01-18",
+              Authorization: `Bearer ${squareToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const orderData = await orderResp.json();
+        const referenceId = orderData.order?.reference_id;
+
+        if (referenceId) {
+          await supabase
+            .from("orders")
+            .update({ status: "cancelled" })
+            .eq("id", referenceId);
+        }
       }
     }
 

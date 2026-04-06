@@ -63,7 +63,8 @@ export interface Order {
   vat: number;
   total: number;
   status: string;
-  stripe_session_id: string;
+  square_payment_id: string;
+  square_checkout_url: string;
   created_at: string;
   updated_at: string;
 }

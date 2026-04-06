@@ -54,11 +54,11 @@ const sections = [
     items: [
       {
         q: 'What payment methods do you accept?',
-        a: 'We accept all major credit and debit cards (Visa, Mastercard, American Express) through our secure Stripe payment gateway. All transactions are protected with 256-bit SSL encryption.',
+        a: 'We accept all major credit and debit cards (Visa, Mastercard, American Express), Apple Pay, and Google Pay through our secure Square payment gateway. All transactions are protected with 256-bit SSL encryption.',
       },
       {
         q: 'Is it safe to order online?',
-        a: 'Absolutely. We use Stripe, one of the world\'s most trusted payment processors, to handle all transactions. Your payment details are never stored on our servers and are protected by industry-leading encryption.',
+        a: 'Absolutely. We use Square, one of the world\'s most trusted payment processors, to handle all transactions. Your payment details are never stored on our servers and are protected by industry-leading encryption.',
       },
       {
         q: 'Can I change or cancel my order?',

@@ -262,8 +262,8 @@ export default function CheckoutPage() {
               <div className="flex items-center gap-3 text-sm text-gray-600">
                 <CreditCard className="h-5 w-5 shrink-0 text-gray-400" />
                 <p>
-                  You'll be securely redirected to Stripe to complete your payment. We accept all
-                  major credit and debit cards.
+                  You'll be securely redirected to Square to complete your payment. We accept all
+                  major credit and debit cards, Apple Pay, and Google Pay.
                 </p>
               </div>
             </div>
@@ -302,7 +302,7 @@ export default function CheckoutPage() {
 
             <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
               <ShieldCheck className="h-4 w-4" />
-              <span>256-bit SSL encrypted checkout powered by Stripe</span>
+              <span>256-bit SSL encrypted checkout powered by Square</span>
             </div>
           </form>
 

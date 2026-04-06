@@ -37,7 +37,7 @@ export default function PrivacyPolicyPage() {
               <ul className="mt-2 list-disc list-inside space-y-1.5">
                 <li><strong>Identity Data:</strong> First name, last name.</li>
                 <li><strong>Contact Data:</strong> Email address, phone number, delivery address.</li>
-                <li><strong>Transaction Data:</strong> Details of products you have purchased from us, order history, and payment information (processed securely by Stripe -- we do not store your full card details).</li>
+                <li><strong>Transaction Data:</strong> Details of products you have purchased from us, order history, and payment information (processed securely by Square -- we do not store your full card details).</li>
                 <li><strong>Technical Data:</strong> IP address, browser type and version, time zone setting, operating system, and other technology on the devices you use to access our website.</li>
                 <li><strong>Usage Data:</strong> Information about how you use our website, including pages visited, time spent on pages, and navigation paths.</li>
               </ul>
@@ -71,7 +71,7 @@ export default function PrivacyPolicyPage() {
               <h2 className="text-lg font-bold text-gray-900">5. Data Sharing</h2>
               <p className="mt-3">We may share your personal information with:</p>
               <ul className="mt-2 list-disc list-inside space-y-1.5">
-                <li><strong>Payment Processors:</strong> Stripe processes your payment information securely. Their privacy policy can be found at stripe.com/privacy.</li>
+                <li><strong>Payment Processors:</strong> Square processes your payment information securely. Their privacy policy can be found at squareup.com/legal/privacy.</li>
                 <li><strong>Delivery Partners:</strong> Royal Mail to fulfil the delivery of your orders.</li>
                 <li><strong>Service Providers:</strong> Trusted third parties who assist us in operating our website and conducting our business (e.g., hosting providers).</li>
               </ul>
@@ -124,7 +124,7 @@ export default function PrivacyPolicyPage() {
             <section>
               <h2 className="text-lg font-bold text-gray-900">9. Data Security</h2>
               <p className="mt-3">
-                We implement appropriate technical and organisational measures to protect your personal data against unauthorised access, alteration, disclosure, or destruction. Our website uses SSL encryption, and all payment processing is handled by Stripe's PCI-DSS compliant infrastructure.
+                We implement appropriate technical and organisational measures to protect your personal data against unauthorised access, alteration, disclosure, or destruction. Our website uses SSL encryption, and all payment processing is handled by Square's PCI-DSS compliant infrastructure.
               </p>
             </section>
 
