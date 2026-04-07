@@ -91,21 +91,29 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-500">
+        <div className="mt-12 border-t border-gray-800 pt-8">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+            <div className="text-xs leading-relaxed text-gray-500">
+              <p className="font-medium text-gray-400">Totalfilter.co.uk is a trading name of ACE Filters LTD</p>
+              <p className="mt-1">Company No. 14001341</p>
+              <p>37 High Street, Tewkesbury, GL20 5BB</p>
+              <p>VAT Reg. No. GB412011016</p>
+            </div>
+            <div className="flex items-center gap-6">
+              <Link to="/privacy-policy" className="text-xs text-gray-500 transition-colors hover:text-gray-300">
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="text-xs text-gray-500 transition-colors hover:text-gray-300">
+                Terms &amp; Conditions
+              </Link>
+              <Link to="/shipping-returns" className="text-xs text-gray-500 transition-colors hover:text-gray-300">
+                Shipping &amp; Returns
+              </Link>
+            </div>
+          </div>
+          <p className="mt-6 text-center text-sm text-gray-500 sm:text-left">
             &copy; {new Date().getFullYear()} Totalfilter.co.uk. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
-            <Link to="/privacy-policy" className="text-xs text-gray-500 transition-colors hover:text-gray-300">
-              Privacy Policy
-            </Link>
-            <Link to="/terms" className="text-xs text-gray-500 transition-colors hover:text-gray-300">
-              Terms &amp; Conditions
-            </Link>
-            <Link to="/shipping-returns" className="text-xs text-gray-500 transition-colors hover:text-gray-300">
-              Shipping &amp; Returns
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
