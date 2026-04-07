@@ -79,7 +79,7 @@ export default function HomePage() {
             <div className="relative hidden lg:block">
               <div className="relative aspect-square overflow-hidden rounded-3xl bg-gradient-to-br from-brand-100 to-ocean-100">
                 <img
-                  src="https://images.pexels.com/photos/5502227/pexels-photo-5502227.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  src="/images/hero-shower.jpg"
                   alt="Premium shower filter"
                   className="h-full w-full object-cover"
                 />
@@ -238,7 +238,7 @@ export default function HomePage() {
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
               <img
-                src="https://images.pexels.com/photos/6621462/pexels-photo-6621462.jpeg?auto=compress&cs=tinysrgb&w=800"
+                src="/images/installation-shower.jpg"
                 alt="Shower filter installation"
                 className="h-full w-full object-cover"
               />
