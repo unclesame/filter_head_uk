@@ -108,38 +108,12 @@ Deno.serve(async (req: Request) => {
 
     const origin = req.headers.get("origin") || "http://localhost:5173";
 
-    const orderResponse = await fetch(`${squareBaseUrl}/v2/orders`, {
-      method: "POST",
-      headers: {
-        "Square-Version": "2025-01-23",
-        Authorization: `Bearer ${squareToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        idempotency_key: generateIdempotencyKey(),
-        order: {
-          location_id: squareLocationId,
-          reference_id: order.id,
-          line_items: lineItems,
-        },
-      }),
-    });
-
-    const orderData = await orderResponse.json();
-
-    if (!orderResponse.ok) {
-      console.error("Square order error:", JSON.stringify(orderData));
-      const detail = orderData.errors?.[0]?.detail || "Failed to create Square order";
-      throw new Error(detail);
-    }
-
-    const squareOrderId = orderData.order.id;
-
     const paymentLinkBody: Record<string, unknown> = {
       idempotency_key: generateIdempotencyKey(),
       order: {
-        order_id: squareOrderId,
         location_id: squareLocationId,
+        reference_id: order.id,
+        line_items: lineItems,
       },
       checkout_options: {
         redirect_url: `${origin}/checkout/success`,
@@ -170,12 +144,15 @@ Deno.serve(async (req: Request) => {
 
     if (!linkResponse.ok) {
       console.error("Square payment link error:", JSON.stringify(linkData));
-      const detail = linkData.errors?.[0]?.detail || "Failed to create payment link";
+      const detail =
+        linkData.errors?.[0]?.detail || "Failed to create payment link";
       throw new Error(detail);
     }
 
     const checkoutUrl = linkData.payment_link.url;
     const paymentLinkId = linkData.payment_link.id;
+    const squareOrderId =
+      linkData.related_resources?.orders?.[0]?.id || paymentLinkId;
 
     await supabase
       .from("orders")
