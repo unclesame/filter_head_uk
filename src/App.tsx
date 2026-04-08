@@ -20,6 +20,7 @@ import AdminProductsPage from './pages/admin/AdminProductsPage';
 import AdminProductEditorPage from './pages/admin/AdminProductEditorPage';
 import AdminGoogleFeedPage from './pages/admin/AdminGoogleFeedPage';
 import ScrollToTop from './components/ScrollToTop';
+import { useCrisp } from './hooks/useCrisp';
 
 function StoreLayout() {
   return (
@@ -34,6 +35,8 @@ function StoreLayout() {
 }
 
 export default function App() {
+  useCrisp();
+
   return (
     <BrowserRouter>
       <AuthProvider>
