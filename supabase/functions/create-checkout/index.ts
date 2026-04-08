@@ -111,7 +111,7 @@ Deno.serve(async (req: Request) => {
     const orderResponse = await fetch(`${squareBaseUrl}/v2/orders`, {
       method: "POST",
       headers: {
-        "Square-Version": "2024-01-18",
+        "Square-Version": "2025-01-23",
         Authorization: `Bearer ${squareToken}`,
         "Content-Type": "application/json",
       },
@@ -121,11 +121,6 @@ Deno.serve(async (req: Request) => {
           location_id: squareLocationId,
           reference_id: order.id,
           line_items: lineItems,
-          metadata: {
-            order_id: order.id,
-            customer_email: customer.email,
-            customer_name: customer.name,
-          },
         },
       }),
     });
@@ -134,40 +129,40 @@ Deno.serve(async (req: Request) => {
 
     if (!orderResponse.ok) {
       console.error("Square order error:", JSON.stringify(orderData));
-      throw new Error("Failed to create Square order");
+      const detail = orderData.errors?.[0]?.detail || "Failed to create Square order";
+      throw new Error(detail);
     }
 
     const squareOrderId = orderData.order.id;
+
+    const paymentLinkBody: Record<string, unknown> = {
+      idempotency_key: generateIdempotencyKey(),
+      order: {
+        order_id: squareOrderId,
+        location_id: squareLocationId,
+      },
+      checkout_options: {
+        redirect_url: `${origin}/checkout/success`,
+        ask_for_shipping_address: false,
+      },
+    };
+
+    if (customer.email) {
+      paymentLinkBody.pre_populated_data = {
+        buyer_email: customer.email,
+      };
+    }
 
     const linkResponse = await fetch(
       `${squareBaseUrl}/v2/online-checkout/payment-links`,
       {
         method: "POST",
         headers: {
-          "Square-Version": "2024-01-18",
+          "Square-Version": "2025-01-23",
           Authorization: `Bearer ${squareToken}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          idempotency_key: generateIdempotencyKey(),
-          order: {
-            order_id: squareOrderId,
-            location_id: squareLocationId,
-          },
-          checkout_options: {
-            redirect_url: `${origin}/checkout/success`,
-            merchant_support_email: "orders@pureshowers.co.uk",
-            ask_for_shipping_address: false,
-            accepted_payment_methods: {
-              apple_pay: true,
-              google_pay: true,
-            },
-          },
-          pre_populated_data: {
-            buyer_email: customer.email,
-            buyer_phone_number: customer.phone || undefined,
-          },
-        }),
+        body: JSON.stringify(paymentLinkBody),
       }
     );
 
@@ -175,7 +170,8 @@ Deno.serve(async (req: Request) => {
 
     if (!linkResponse.ok) {
       console.error("Square payment link error:", JSON.stringify(linkData));
-      throw new Error("Failed to create payment link");
+      const detail = linkData.errors?.[0]?.detail || "Failed to create payment link";
+      throw new Error(detail);
     }
 
     const checkoutUrl = linkData.payment_link.url;
