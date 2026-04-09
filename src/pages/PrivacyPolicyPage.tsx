@@ -115,8 +115,8 @@ export default function PrivacyPolicyPage() {
               </ul>
               <p className="mt-2">
                 To exercise any of these rights, please contact us at{' '}
-                <a href="mailto:support@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">
-                  support@totalfilter.co.uk
+                <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">
+                  sales@totalfilter.co.uk
                 </a>.
               </p>
             </section>
@@ -148,7 +148,7 @@ export default function PrivacyPolicyPage() {
                 If you have any questions about this Privacy Policy or how we handle your personal data, please contact us:
               </p>
               <ul className="mt-2 space-y-1">
-                <li>Email: <a href="mailto:support@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">support@totalfilter.co.uk</a></li>
+                <li>Email: <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">sales@totalfilter.co.uk</a></li>
                 <li>Phone: 0800 612 7174</li>
               </ul>
             </section>

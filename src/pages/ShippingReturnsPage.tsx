@@ -105,7 +105,7 @@ export default function ShippingReturnsPage() {
               <div>
                 <h3 className="font-semibold text-gray-900">How to Return an Item</h3>
                 <ol className="mt-2 list-decimal list-inside space-y-2">
-                  <li>Contact our team at <a href="mailto:support@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">support@totalfilter.co.uk</a> with your order number and reason for return.</li>
+                  <li>Contact our team at <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">sales@totalfilter.co.uk</a> with your order number and reason for return.</li>
                   <li>We will provide you with a returns authorisation and instructions.</li>
                   <li>Package the item securely and post it back to us using a tracked delivery service.</li>
                   <li>Once received and inspected, we will process your refund within 5-7 working days.</li>
@@ -122,7 +122,7 @@ export default function ShippingReturnsPage() {
               <div>
                 <h3 className="font-semibold text-gray-900">Damaged or Faulty Items</h3>
                 <p className="mt-2">
-                  If you receive a damaged or faulty item, please contact us within 48 hours of delivery at <a href="mailto:support@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">support@totalfilter.co.uk</a> with photos of the damage. We will arrange a free replacement or full refund at no extra cost to you.
+                  If you receive a damaged or faulty item, please contact us within 48 hours of delivery at <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">sales@totalfilter.co.uk</a> with photos of the damage. We will arrange a free replacement or full refund at no extra cost to you.
                 </p>
               </div>
 
@@ -139,7 +139,7 @@ export default function ShippingReturnsPage() {
             <h2 className="text-xl font-bold text-gray-900">Cancellations</h2>
             <div className="mt-6 text-sm leading-relaxed text-gray-600">
               <p>
-                You have the right to cancel your order within 14 days of receiving your goods under the Consumer Contracts Regulations 2013. To cancel, please email us at <a href="mailto:support@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">support@totalfilter.co.uk</a> with your order number. If your order has not yet been dispatched, we will cancel it and issue a full refund immediately.
+                You have the right to cancel your order within 14 days of receiving your goods under the Consumer Contracts Regulations 2013. To cancel, please email us at <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">sales@totalfilter.co.uk</a> with your order number. If your order has not yet been dispatched, we will cancel it and issue a full refund immediately.
               </p>
             </div>
           </section>
@@ -149,8 +149,8 @@ export default function ShippingReturnsPage() {
           <p>Last updated: February 2026</p>
           <p className="mt-1">
             Questions? Contact us at{' '}
-            <a href="mailto:support@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">
-              support@totalfilter.co.uk
+            <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">
+              sales@totalfilter.co.uk
             </a>
           </p>
         </div>

@@ -62,7 +62,7 @@ const sections = [
       },
       {
         q: 'Can I change or cancel my order?',
-        a: 'If you need to change or cancel your order, please contact us at support@totalfilter.co.uk as soon as possible. We process orders quickly, so we can only guarantee changes if you contact us within 1 hour of placing your order.',
+        a: 'If you need to change or cancel your order, please contact us at sales@totalfilter.co.uk as soon as possible. We process orders quickly, so we can only guarantee changes if you contact us within 1 hour of placing your order.',
       },
     ],
   },
@@ -155,7 +155,7 @@ export default function FAQPage() {
             Our team is here to help. Get in touch and we'll respond as quickly as possible.
           </p>
           <a
-            href="mailto:support@totalfilter.co.uk"
+            href="mailto:sales@totalfilter.co.uk"
             className="btn-primary mt-6 inline-flex"
           >
             Contact Support

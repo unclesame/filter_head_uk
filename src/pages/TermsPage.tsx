@@ -148,7 +148,7 @@ export default function TermsPage() {
                 If you have any questions about these Terms, please contact us:
               </p>
               <ul className="mt-2 space-y-1">
-                <li>Email: <a href="mailto:support@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">support@totalfilter.co.uk</a></li>
+                <li>Email: <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">sales@totalfilter.co.uk</a></li>
                 <li>Phone: 0800 612 7174</li>
               </ul>
             </section>

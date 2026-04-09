@@ -77,7 +77,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-3">
               <li className="flex items-center gap-2.5">
                 <Mail className="h-4 w-4 text-gray-500" />
-                <span className="text-sm text-gray-400">support@totalfilter.co.uk</span>
+                <span className="text-sm text-gray-400">sales@totalfilter.co.uk</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 text-gray-500" />
