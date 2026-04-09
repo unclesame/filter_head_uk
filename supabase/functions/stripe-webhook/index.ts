@@ -291,7 +291,7 @@ ${formatAddress(order.shipping_address)}
 
 Your order will be dispatched within 1-2 business days. You will receive a tracking number once shipped.
 
-If you have any questions, please contact us at support@pureshowers.co.uk or call 0800 612 7174.
+If you have any questions, please contact us at support@pureshowers.co.uk or call +44 1304 700370.
 
 Thank you for choosing PureShowers!
 

@@ -149,7 +149,7 @@ export default function TermsPage() {
               </p>
               <ul className="mt-2 space-y-1">
                 <li>Email: <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">sales@totalfilter.co.uk</a></li>
-                <li>Phone: 0800 612 7174</li>
+                <li>Phone: +44 1304 700370</li>
               </ul>
             </section>
           </div>
