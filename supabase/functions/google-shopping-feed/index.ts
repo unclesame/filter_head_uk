@@ -38,23 +38,31 @@ interface Product {
   updated_at: string;
 }
 
+function toAbsoluteUrl(url: string): string {
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+  return `${STORE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+}
+
 function buildProductEntry(product: Product): string {
   const availability =
     product.stock_quantity > 0 ? "in_stock" : "out_of_stock";
   const productUrl = `${STORE_URL}/products/${product.slug}`;
   const priceGbp = `${product.price.toFixed(2)} GBP`;
   const condition = "new";
+  const imageUrl = toAbsoluteUrl(product.image_url);
 
   let entry = `    <item>
       <g:id>${escapeXml(product.id)}</g:id>
       <title>${escapeXml(product.name)}</title>
       <description>${escapeXml(product.short_description || product.description)}</description>
       <link>${escapeXml(productUrl)}</link>
-      <g:image_link>${escapeXml(product.image_url)}</g:image_link>`;
+      <g:image_link>${escapeXml(imageUrl)}</g:image_link>`;
 
   if (product.images && product.images.length > 1) {
     for (let i = 1; i < Math.min(product.images.length, 11); i++) {
-      entry += `\n      <g:additional_image_link>${escapeXml(product.images[i])}</g:additional_image_link>`;
+      entry += `\n      <g:additional_image_link>${escapeXml(toAbsoluteUrl(product.images[i]))}</g:additional_image_link>`;
     }
   }
 
@@ -147,9 +155,9 @@ Deno.serve(async (req: Request) => {
         title: p.name,
         description: p.short_description || p.description,
         link: `${STORE_URL}/products/${p.slug}`,
-        image_link: p.image_url,
+        image_link: toAbsoluteUrl(p.image_url),
         additional_image_links:
-          p.images && p.images.length > 1 ? p.images.slice(1, 11) : [],
+          p.images && p.images.length > 1 ? p.images.slice(1, 11).map(toAbsoluteUrl) : [],
         availability: p.stock_quantity > 0 ? "in_stock" : "out_of_stock",
         price: `${p.price.toFixed(2)} GBP`,
         sale_price:
