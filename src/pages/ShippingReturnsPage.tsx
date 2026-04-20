@@ -96,26 +96,40 @@ export default function ShippingReturnsPage() {
 
             <div className="mt-6 space-y-6 text-sm leading-relaxed text-gray-600">
               <div>
-                <h3 className="font-semibold text-gray-900">30-Day Money-Back Guarantee</h3>
+                <h3 className="font-semibold text-gray-900">30-Day Returns &amp; Exchanges</h3>
                 <p className="mt-2">
-                  We are confident you will love your shower filter. If for any reason you are not completely satisfied, you may return your purchase within 30 days of delivery for a full refund. Items must be unused, in their original packaging, and in resalable condition.
+                  We accept returns and exchanges for both defective and non-defective products within 30 days of delivery. Items may be returned in new or slightly used condition. We are confident you will love your shower filter, but if for any reason you are not completely satisfied, you can return or exchange your purchase with ease.
                 </p>
               </div>
 
               <div>
-                <h3 className="font-semibold text-gray-900">How to Return an Item</h3>
+                <h3 className="font-semibold text-gray-900">How to Return or Exchange an Item</h3>
                 <ol className="mt-2 list-decimal list-inside space-y-2">
-                  <li>Contact our team at <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">sales@totalfilter.co.uk</a> with your order number and reason for return.</li>
-                  <li>We will provide you with a returns authorisation and instructions.</li>
-                  <li>Package the item securely and post it back to us using a tracked delivery service.</li>
-                  <li>Once received and inspected, we will process your refund within 5-7 working days.</li>
+                  <li>Contact our team at <a href="mailto:sales@totalfilter.co.uk" className="text-brand-600 hover:text-brand-700 font-medium">sales@totalfilter.co.uk</a> with your order number and reason for return or exchange.</li>
+                  <li>We will provide you with a returns authorisation and a free prepaid return label.</li>
+                  <li>Package the item securely and send it back to us by mail, or arrange an in-store return.</li>
+                  <li>Once received and inspected, we will process your refund or exchange within 7 working days.</li>
                 </ol>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900">Return Label &amp; Fees</h3>
+                <p className="mt-2">
+                  A free return label is included with every order. There are no restocking fees for any returns. Simply use the prepaid label to send your item back to us at no cost.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900">Return Methods</h3>
+                <p className="mt-2">
+                  You may return items by mail using the free return label provided, or in store. Both methods are available at no extra charge.
+                </p>
               </div>
 
               <div>
                 <h3 className="font-semibold text-gray-900">Refunds</h3>
                 <p className="mt-2">
-                  Refunds will be issued to the original payment method. Please allow 5-7 working days for the refund to appear in your account after we have received and inspected the returned item.
+                  Refunds will be issued to the original payment method. Please allow up to 7 working days for the refund to appear in your account after we have received and inspected the returned item.
                 </p>
               </div>
 
