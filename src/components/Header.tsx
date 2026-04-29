@@ -12,6 +12,8 @@ export default function Header() {
     { to: '/', label: 'Home' },
     { to: '/products', label: 'Shop All' },
     { to: '/products?filter=best-sellers', label: 'Best Sellers' },
+    { to: '/about', label: 'About Us' },
+    { to: '/contact', label: 'Contact' },
   ];
 
   const isActive = (to: string) => {

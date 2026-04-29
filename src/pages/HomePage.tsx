@@ -10,6 +10,10 @@ import {
   RotateCcw,
   Star,
   ChevronRight,
+  ShieldCheck,
+  CreditCard,
+  CheckCircle,
+  Clock,
 } from 'lucide-react';
 import { fetchProducts } from '../lib/cache';
 import type { Product } from '../types';
@@ -318,6 +322,41 @@ export default function HomePage() {
                 <p className="text-xs text-brand-600">Verified Buyer</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-gray-100 bg-white py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">Trusted UK Business</p>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+              Shop With Confidence
+            </h2>
+          </div>
+          <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+            {[
+              { icon: ShieldCheck, label: 'SSL Encrypted', desc: 'Secure checkout' },
+              { icon: CreditCard, label: 'Visa & Mastercard', desc: 'All major cards' },
+              { icon: Truck, label: 'Free Delivery', desc: 'Orders over \u00A329' },
+              { icon: RotateCcw, label: '30-Day Returns', desc: 'Money-back guarantee' },
+              { icon: CheckCircle, label: 'UK Registered', desc: 'Company No. 14001341' },
+              { icon: Clock, label: 'Since 2008', desc: '15+ years trusted' },
+            ].map(({ icon: Icon, label, desc }) => (
+              <div key={label} className="text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50">
+                  <Icon className="h-6 w-6 text-brand-600" />
+                </div>
+                <p className="mt-3 text-xs font-semibold text-gray-900">{label}</p>
+                <p className="mt-0.5 text-xs text-gray-500">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <p className="text-xs text-gray-500">
+              Totalfilter.co.uk is a trading name of ACE Filters LTD &middot; VAT Reg. No. GB412011016 &middot;{' '}
+              <Link to="/about" className="text-brand-600 hover:text-brand-700 font-medium">Learn more about us</Link>
+            </p>
           </div>
         </div>
       </section>

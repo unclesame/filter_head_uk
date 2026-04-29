@@ -82,7 +82,7 @@ export default function TermsPage() {
                 You have a right to cancel your order within 14 days of receiving the goods under the Consumer Contracts (Information, Cancellation and Additional Charges) Regulations 2013.
               </p>
               <p className="mt-2">
-                In addition, we offer a 30-day money-back guarantee on all products. Items must be returned unused, in their original packaging, and in resalable condition. Used filter cartridges cannot be returned for hygiene reasons.
+                In addition, we offer a 30-day money-back guarantee on all products. We accept returns and exchanges for both defective and non-defective items. Products may be returned in new or slightly used condition. A free return label is provided, and there are no restocking fees. Used filter cartridges cannot be returned for hygiene reasons. Refunds are processed within 7 working days of receiving the returned item.
               </p>
               <p className="mt-2">
                 For full details, please refer to our{' '}

@@ -14,6 +14,8 @@ import FAQPage from './pages/FAQPage';
 import ShippingReturnsPage from './pages/ShippingReturnsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
 import TermsPage from './pages/TermsPage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminLayout from './pages/admin/AdminLayout';
 import AdminProductsPage from './pages/admin/AdminProductsPage';
@@ -63,6 +65,8 @@ export default function App() {
               <Route path="/shipping-returns" element={<ShippingReturnsPage />} />
               <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
               <Route path="/terms" element={<TermsPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
             </Route>
           </Routes>
         </CartProvider>
