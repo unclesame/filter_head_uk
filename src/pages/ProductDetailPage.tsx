@@ -109,9 +109,63 @@ export default function ProductDetailPage() {
   const discount = product.original_price
     ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
     : 0;
+  const inStock = product.stock_quantity > 0;
+
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "description": product.short_description || product.description,
+    "image": allImages.map(img => img.startsWith('http') ? img : `https://totalfilter.co.uk${img}`),
+    "brand": { "@type": "Brand", "name": "Totalfilter.co.uk" },
+    "sku": product.slug,
+    "category": product.category,
+    "url": `https://totalfilter.co.uk/products/${product.slug}`,
+    "offers": {
+      "@type": "Offer",
+      "url": `https://totalfilter.co.uk/products/${product.slug}`,
+      "priceCurrency": "GBP",
+      "price": product.price.toFixed(2),
+      "availability": inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": { "@type": "Organization", "name": "Totalfilter.co.uk" },
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingDestination": { "@type": "DefinedRegion", "addressCountry": "GB" },
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": product.price >= 29 ? "0.00" : "4.99",
+          "currency": "GBP"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "transitTime": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY" }
+        }
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "GB",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 30,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
+      }
+    },
+    ...(product.rating > 0 && product.review_count > 0 ? {
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": product.rating.toFixed(1),
+        "reviewCount": product.review_count
+      }
+    } : {})
+  };
 
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <nav className="flex items-center gap-2 text-sm text-gray-500">
           <Link to="/" className="hover:text-gray-700">Home</Link>
@@ -130,6 +184,7 @@ export default function ProductDetailPage() {
                 src={allImages[selectedImage] || product.image_url}
                 alt={product.name}
                 className="h-full w-full object-cover"
+                onError={(e) => { (e.target as HTMLImageElement).src = '/favicon.svg'; }}
               />
               {product.is_best_seller && (
                 <div className="absolute left-4 top-4 rounded-full bg-amber-500 px-3 py-1 text-xs font-bold text-white">
@@ -190,7 +245,15 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            <p className="mt-6 text-base leading-relaxed text-gray-600">{product.description}</p>
+            <p className="mt-2 text-sm font-medium">
+              {inStock ? (
+                <span className="text-green-600">In Stock - Ready to ship</span>
+              ) : (
+                <span className="text-red-600">Out of Stock</span>
+              )}
+            </p>
+
+            <p className="mt-5 text-base leading-relaxed text-gray-600">{product.description}</p>
 
             {product.features && product.features.length > 0 && (
               <div className="mt-8">

@@ -33,6 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           src={product.image_url}
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          onError={(e) => { (e.target as HTMLImageElement).src = '/favicon.svg'; }}
         />
       </Link>
 
@@ -48,7 +49,15 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         <p className="mt-2 text-sm text-gray-500 line-clamp-2">{product.short_description}</p>
 
-        <div className="mt-3 flex items-center gap-1.5">
+        <p className="mt-2 text-xs font-medium">
+          {product.stock_quantity > 0 ? (
+            <span className="text-green-600">In Stock</span>
+          ) : (
+            <span className="text-red-600">Out of Stock</span>
+          )}
+        </p>
+
+        <div className="mt-2 flex items-center gap-1.5">
           <div className="flex items-center">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star
